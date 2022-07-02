@@ -1,4 +1,4 @@
-package com.qc.cookielogparser.model;
+package com.qc.cookielogparser.data.model;
 
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvDate;

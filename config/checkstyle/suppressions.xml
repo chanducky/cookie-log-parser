@@ -5,4 +5,5 @@
 
 <suppressions>
     <suppress files=".*Test" checks="JavadocType"/>
+    <suppress files="ParseLogCommand.java" checks="IllegalCatch"/>
 </suppressions>

@@ -1,6 +1,6 @@
 package com.qc.cookielogparser.command;
 
-import com.qc.cookielogparser.model.CookieDetail;
+import com.qc.cookielogparser.data.model.CookieDetail;
 import com.qc.cookielogparser.service.CookieLogService;
 import com.qc.cookielogparser.service.FileParserService;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +49,10 @@ public class ParseLogCommand
         try
         {
             List<CookieDetail> cookieDetailList = _fileParserService.parseCsvToBean(file, CookieDetail.class);
-            if (log.isDebugEnabled()) {cookieDetailList.forEach(System.out::println);}
+            if (log.isDebugEnabled())
+            {
+                cookieDetailList.forEach(System.out::println);
+            }
             List<CookieDetail> resultList = _cookieLogService.searchCookiesByDate(cookieDetailList, date);
             resultList.stream().map(CookieDetail::getCookie).forEach(System.out::println);
             return 0;

@@ -1,6 +1,6 @@
 package com.qc.cookielogparser.service.impl;
 
-import com.qc.cookielogparser.model.CookieDetail;
+import com.qc.cookielogparser.data.model.CookieDetail;
 import com.qc.cookielogparser.service.CookieLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
@@ -13,10 +13,13 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class CookieLogServiceImpl implements CookieLogService
+public class CookieLogServiceImpl
+        implements CookieLogService
 {
     @Override
-    public List<CookieDetail> searchCookiesByDate(@NonNull final List<CookieDetail> cookieList, @NonNull final Date date)
+    public List<CookieDetail> searchCookiesByDate(
+            @NonNull final List<CookieDetail> cookieList,
+            @NonNull final Date date)
     {
         CookieDetail cookie = new CookieDetail();
         cookie.setTimestamp(date);
