@@ -12,7 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class CookieDetail implements Comparable<CookieDetail>
 {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     @CsvBindByName
     private String cookie;
 
@@ -25,9 +25,6 @@ public class CookieDetail implements Comparable<CookieDetail>
     {
         String d1 = sdf.format(this.getTimestamp());
         String d2= sdf.format(o.getTimestamp());
-        System.out.println("d1 ="+d1);
-        System.out.println("d2 ="+d2);
-        System.out.println();
         return d2.compareTo(d1);
     }
 }

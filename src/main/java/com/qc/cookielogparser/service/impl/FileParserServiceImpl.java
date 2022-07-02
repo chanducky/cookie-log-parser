@@ -20,20 +20,19 @@ public class FileParserServiceImpl implements FileParserService
 {
 
     @Override
-    public <T> List<T>  parseCsvToBean(@NonNull File file, Class<T> clazz)
+    public <T> List<T> parseCsvToBean(@NonNull final File file, Class<T> clazz)
             throws IOException
     {
         Reader reader = Files.newBufferedReader(file.toPath());
+        HeaderColumnNameMappingStrategy<T> strategy
+                = new HeaderColumnNameMappingStrategy<>();
+        strategy.setType(clazz);
 
-            HeaderColumnNameMappingStrategy<T> strategy
-                    = new HeaderColumnNameMappingStrategy<>();
-            strategy.setType(clazz);
+        CsvToBean<T> csvToBean = new CsvToBeanBuilder<T>(reader)
+                .withMappingStrategy(strategy)
+                .withIgnoreLeadingWhiteSpace(true)
+                .build();
 
-            CsvToBean<T> csvToBean = new CsvToBeanBuilder<T>(reader)
-                    .withMappingStrategy(strategy)
-                    .withIgnoreLeadingWhiteSpace(true)
-                    .build();
-
-            return csvToBean.parse();
+        return csvToBean.parse();
     }
 }

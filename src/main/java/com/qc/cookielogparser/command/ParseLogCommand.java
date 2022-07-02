@@ -10,15 +10,15 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
 import java.io.File;
-import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 
 @Slf4j
 @Component
-@Command(name = "parseCookieLog", mixinStandardHelpOptions = true,
-        description = "Parse and search cookie from log file")
+@Command(name = "searchCookieFromLogFile", mixinStandardHelpOptions = true,
+        description = "Search cookie from log the log file by date.")
 public class ParseLogCommand
         implements Callable<Integer>
 {
@@ -33,31 +33,35 @@ public class ParseLogCommand
         _cookieLogService = cookieLogService;
     }
 
-    @Option(names = {"-f", "--file"},required = true, paramLabel = "File",
-            description = "Cookie log file relative path.")
+    @Option(names = {"-f", "--file"}, required = true, paramLabel = "File",
+            description = "Cookie log file relative path.", arity = "1")
     private File file;
 
-    @Option(names = {"-d", "--date"},required = true, paramLabel = "Date",
-            description = "Date of cookie generation in yyyy-MM-dd format.")
+    @Option(names = {"-d", "--date"}, required = true, paramLabel = "Date",
+            description = "Date of cookie generation in yyyy-MM-dd format.", arity = "1")
     private Date date;
 
     @Override
     public Integer call()
     {
-        log.info("file : {}", file.getAbsolutePath());
-        log.info("Date : {}", date);
+        log.debug("file : {}", file.getAbsolutePath());
+        log.debug("Date : {}", date);
         try
         {
             List<CookieDetail> cookieDetailList = _fileParserService.parseCsvToBean(file, CookieDetail.class);
-            //cookieDetailList.stream().forEach(System.out::println);
+            if (log.isDebugEnabled()) {cookieDetailList.forEach(System.out::println);}
             List<CookieDetail> resultList = _cookieLogService.searchCookiesByDate(cookieDetailList, date);
             resultList.stream().map(CookieDetail::getCookie).forEach(System.out::println);
+            return 0;
         }
-        catch (IOException e)
+        catch (NoSuchFileException e)
         {
-            log.error("Error wile parsing the csv file.", e);
-            return 1;
+            log.error(" File : {} not found.", file, e);
         }
-        return 0;
+        catch (Exception e)
+        {
+            log.error("Unknown error", e);
+        }
+        return 1;
     }
 }

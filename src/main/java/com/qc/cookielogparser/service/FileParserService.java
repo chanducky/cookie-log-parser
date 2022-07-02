@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface FileParserService
 {
-    public <T> List<T> parseCsvToBean(File file, Class<T> clazz)
+    <T> List<T> parseCsvToBean(File file, Class<T> clazz)
             throws IOException;
 }
