@@ -1,5 +1,6 @@
 package com.qc.cookielogparser.command;
 
+import com.qc.cookielogparser.data.common.AppConstants;
 import com.qc.cookielogparser.data.model.CookieDetail;
 import com.qc.cookielogparser.service.CookieLogService;
 import com.qc.cookielogparser.service.FileParserService;
@@ -47,18 +48,26 @@ public class ParseLogCommand
     @Override
     public Integer call()
     {
-        log.debug("file : {}", file);
-        log.debug("Date : {}", date);
-
         try
         {
+            log.debug("file : {}", file);
+            log.debug("Date : {}", date);
+
             List<CookieDetail> cookieDetailList = fileParserService.parseCsvToBean(file, CookieDetail.class);
             if (log.isDebugEnabled())
             {
                 cookieDetailList.forEach(System.out::println);
             }
             List<CookieDetail> resultList = cookieLogService.searchCookiesByDate(cookieDetailList, date);
-            resultList.stream().map(CookieDetail::getCookie).forEach(System.out::println);
+            if (resultList != null)
+            {
+                resultList.stream().map(CookieDetail::getCookie).forEach(System.out::println);
+            }
+            else
+            {
+                System.out.println(
+                        String.format("No cookie found for the date : %s.", AppConstants.SDF_ONLY_DATE.format(date)));
+            }
             return 0;
         }
         catch (NoSuchFileException e)

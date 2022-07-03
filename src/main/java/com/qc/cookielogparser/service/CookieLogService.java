@@ -1,6 +1,7 @@
 package com.qc.cookielogparser.service;
 
 import com.qc.cookielogparser.data.model.CookieDetail;
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 import java.util.Date;
@@ -15,8 +16,8 @@ public interface CookieLogService
      * Search cookies from cookie list by cookie generated date.
      * @param cookieList List of cookie.
      * @param date cookie date.
-     * @return @Nullable cookies generated on the search date.
+     * @return cookies generated on the search date.
      */
     @Nullable
-    List<CookieDetail> searchCookiesByDate(List<CookieDetail> cookieList, Date date);
+    List<CookieDetail> searchCookiesByDate(@NonNull List<CookieDetail> cookieList, @NonNull Date date);
 }
