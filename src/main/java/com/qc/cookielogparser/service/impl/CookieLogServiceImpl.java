@@ -11,11 +11,17 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * {@inheritdoc}
+ */
 @Slf4j
 @Service
 public class CookieLogServiceImpl
         implements CookieLogService
 {
+    /**
+     * {@inheritdoc}
+     */
     @Override
     public List<CookieDetail> searchCookiesByDate(
             @NonNull final List<CookieDetail> cookieList,

@@ -14,11 +14,16 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.util.List;
 
+/**
+ * {@inheritdoc}
+ */
 @Slf4j
 @Service
 public class FileParserServiceImpl implements FileParserService
 {
-
+    /**
+     * {@inheritdoc}
+     */
     @Override
     public <T> List<T> parseCsvToBean(@NonNull final File file, Class<T> clazz)
             throws IOException
@@ -27,12 +32,10 @@ public class FileParserServiceImpl implements FileParserService
         HeaderColumnNameMappingStrategy<T> strategy
                 = new HeaderColumnNameMappingStrategy<>();
         strategy.setType(clazz);
-
         CsvToBean<T> csvToBean = new CsvToBeanBuilder<T>(reader)
                 .withMappingStrategy(strategy)
                 .withIgnoreLeadingWhiteSpace(true)
                 .build();
-
         return csvToBean.parse();
     }
 }

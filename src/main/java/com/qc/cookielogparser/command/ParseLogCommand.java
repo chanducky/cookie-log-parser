@@ -15,6 +15,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+/**
+ * This component take input from command line arguments and process accordingly.
+ */
 @Slf4j
 @Component
 @Command(name = "searchCookieFromLogFile", mixinStandardHelpOptions = true,
@@ -46,6 +49,7 @@ public class ParseLogCommand
     {
         log.debug("file : {}", file.getAbsolutePath());
         log.debug("Date : {}", date);
+
         try
         {
             List<CookieDetail> cookieDetailList = _fileParserService.parseCsvToBean(file, CookieDetail.class);
@@ -63,7 +67,7 @@ public class ParseLogCommand
         }
         catch (Exception e)
         {
-            log.error("Unknown error", e);
+            log.error("Unknown error.", e);
         }
         return 1;
     }

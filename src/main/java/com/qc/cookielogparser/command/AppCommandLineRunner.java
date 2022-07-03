@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 import picocli.CommandLine;
 import picocli.CommandLine.IFactory;
 
+/**
+ * Component executes command lines.
+ */
 @Slf4j
 @Component
 public class AppCommandLineRunner
