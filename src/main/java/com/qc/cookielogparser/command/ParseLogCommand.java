@@ -25,15 +25,15 @@ import java.util.concurrent.Callable;
 public class ParseLogCommand
         implements Callable<Integer>
 {
-    private final FileParserService _fileParserService;
-    private final CookieLogService _cookieLogService;
+    private final FileParserService fileParserService;
+    private final CookieLogService cookieLogService;
 
     @Autowired
     public ParseLogCommand(FileParserService fileParserService,
                            CookieLogService cookieLogService)
     {
-        _fileParserService = fileParserService;
-        _cookieLogService = cookieLogService;
+        this.fileParserService = fileParserService;
+        this.cookieLogService = cookieLogService;
     }
 
     @Option(names = {"-f", "--file"}, required = true, paramLabel = "File",
@@ -47,17 +47,17 @@ public class ParseLogCommand
     @Override
     public Integer call()
     {
-        log.debug("file : {}", file.getAbsolutePath());
+        log.debug("file : {}", file);
         log.debug("Date : {}", date);
 
         try
         {
-            List<CookieDetail> cookieDetailList = _fileParserService.parseCsvToBean(file, CookieDetail.class);
+            List<CookieDetail> cookieDetailList = fileParserService.parseCsvToBean(file, CookieDetail.class);
             if (log.isDebugEnabled())
             {
                 cookieDetailList.forEach(System.out::println);
             }
-            List<CookieDetail> resultList = _cookieLogService.searchCookiesByDate(cookieDetailList, date);
+            List<CookieDetail> resultList = cookieLogService.searchCookiesByDate(cookieDetailList, date);
             resultList.stream().map(CookieDetail::getCookie).forEach(System.out::println);
             return 0;
         }

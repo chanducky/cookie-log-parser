@@ -16,22 +16,22 @@ import picocli.CommandLine.IFactory;
 public class AppCommandLineRunner
         implements CommandLineRunner, ExitCodeGenerator
 {
-    private final ParseLogCommand _parseLogCommand;
-    private final IFactory _factory;
+    private final ParseLogCommand parseLogCommand;
+    private final IFactory factory;
 
     private int exitCode;
 
     @Autowired
     public AppCommandLineRunner(ParseLogCommand parseLogCommand, IFactory factory)
     {
-        _parseLogCommand = parseLogCommand;
-        _factory = factory;
+        this.parseLogCommand = parseLogCommand;
+        this.factory = factory;
     }
 
     @Override
     public void run(String... args)
     {
-        exitCode = new CommandLine(_parseLogCommand, _factory).execute(args);
+        exitCode = new CommandLine(parseLogCommand, factory).execute(args);
     }
 
     @Override

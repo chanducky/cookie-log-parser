@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static com.qc.cookielogparser.data.common.AppConstants.SDF_ONLY_DATE;
+
 /**
  * Cookie data.
  */
@@ -16,7 +18,6 @@ import java.util.Date;
 @NoArgsConstructor
 public class CookieDetail implements Comparable<CookieDetail>
 {
-    private final SimpleDateFormat sdf = new SimpleDateFormat(AppConstants.SEARCH_KEY_DATE_PATTERN);
     @CsvBindByName
     private String cookie;
 
@@ -27,8 +28,8 @@ public class CookieDetail implements Comparable<CookieDetail>
     @Override
     public int compareTo(CookieDetail o)
     {
-        String d1 = sdf.format(this.getTimestamp());
-        String d2= sdf.format(o.getTimestamp());
+        String d1 = SDF_ONLY_DATE.format(this.getTimestamp());
+        String d2= SDF_ONLY_DATE.format(o.getTimestamp());
         return d2.compareTo(d1);
     }
 }
