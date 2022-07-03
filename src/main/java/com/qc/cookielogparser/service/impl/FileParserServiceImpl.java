@@ -36,6 +36,8 @@ public class FileParserServiceImpl implements FileParserService
                 .withMappingStrategy(strategy)
                 .withIgnoreLeadingWhiteSpace(true)
                 .build();
-        return csvToBean.parse();
+        List<T> list = csvToBean.parse();
+        reader.close();
+        return list;
     }
 }

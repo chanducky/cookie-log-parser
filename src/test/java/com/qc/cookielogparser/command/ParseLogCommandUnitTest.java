@@ -15,6 +15,9 @@ import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Unit tests for ParseLogCommand.
+ */
 class ParseLogCommandUnitTest
 {
     @Mock
