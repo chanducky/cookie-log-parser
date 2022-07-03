@@ -74,6 +74,6 @@ class FileParserServiceImplUnitTest
         List<CookieDetail> cookieDetailList = fileParserService.parseCsvToBean(new File(url.getFile()),
                                                                                CookieDetail.class);
         Assertions.assertNotNull(cookieDetailList);
-        Assertions.assertTrue(cookieDetailList.size()>0);
+        Assertions.assertTrue(cookieDetailList.size() > 0);
     }
 }
