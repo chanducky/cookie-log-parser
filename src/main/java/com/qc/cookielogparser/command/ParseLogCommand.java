@@ -21,8 +21,8 @@ import java.util.concurrent.Callable;
  */
 @Slf4j
 @Component
-@Command(name = "search-cookie", mixinStandardHelpOptions = true,
-        description = "Search cookie from the log file by date.")
+@Command(name = "search-cookies", mixinStandardHelpOptions = true,
+        description = "Search cookies from the log file by date.")
 public class ParseLogCommand
         implements Callable<Integer>
 {
