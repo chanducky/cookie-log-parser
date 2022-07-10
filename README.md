@@ -1,5 +1,5 @@
 # cookie-log-parser
-A command line program in SpringBoot framework to process the log file and return the most active
+A command line program to process the log file and return the most active
 cookie for a specific day.
 
 ### Assumption
@@ -25,21 +25,23 @@ The following guides illustrate how to use some features concretely:
 * `java -jar <jar file name> -f <file path> -d=<date in YYYY-MM-DD format>`
 * i.e `java -jar cookie-log-parser-0.0.1-SNAPSHOT.jar -f cookie_log_data.csv -d=2018-12-09`
 
-###Development frameworks and libraries
+### Used Development frameworks, Tools and libraries
 ###### Development Framework
 * SpringBoot 2.7.1
 ###### Programing language
 * Java 8
+###### Tool for maintaining coding standard
+Checkstyle
 ######  CSV parser library
 * Opencsv 
 ######  java commandline framework
 * Picocli 
-######  Unit test framework  
-* junit-jupiter, Mockito  
+######  Unit test frameworks  
+* junit-jupiter, Mockito etc.
 ######  Integration test framework
 SpringBootTest
 ###### Other 
-*lombok
+* lombok
 
 ### Reference Documentation
 
@@ -49,3 +51,4 @@ For further reference, please consider the following sections:
 * [Spring Boot Gradle Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.7.1/gradle-plugin/reference/html/)
 * [Picocli](https://picocli.info/#_spring_boot_example)
 * [Opencsv Users Guide](http://opencsv.sourceforge.net/)
+* [Checkstyle](https://checkstyle.sourceforge.io/)
