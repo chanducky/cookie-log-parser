@@ -42,7 +42,7 @@ class CookieLogServiceImplUniTest
             Date date = null;
             try
             {
-                date = AppConstants.SDF_CSV_DATE.parse(columns[1].trim());
+                date = AppConstants.SDF_CSV_DATE_TIME.parse(columns[1].trim());
             }
             catch (ParseException e)
             {
@@ -83,7 +83,7 @@ class CookieLogServiceImplUniTest
     void testSearchCookiesByDateWithSingleMatch()
             throws ParseException
     {
-        Date date = AppConstants.SDF_ONLY_DATE.parse("2018-12-03");
+        Date date = AppConstants.SDF_DATE.parse("2018-12-03");
         List<CookieDetail> foundCookies = cookieLogService.searchCookiesByDate(cookieLogs, date);
         Assertions.assertNotNull(foundCookies);
         Assertions.assertEquals(1, foundCookies.size());
@@ -93,7 +93,7 @@ class CookieLogServiceImplUniTest
     void testSearchCookiesByDateWithMultipleMatch()
             throws ParseException
     {
-        Date date = AppConstants.SDF_ONLY_DATE.parse("2018-12-08");
+        Date date = AppConstants.SDF_DATE.parse("2018-12-08");
         List<CookieDetail> foundCookies = cookieLogService.searchCookiesByDate(cookieLogs, date);
         Assertions.assertNotNull(foundCookies);
         Assertions.assertEquals(3, foundCookies.size());
@@ -103,7 +103,7 @@ class CookieLogServiceImplUniTest
     void testSearchCookiesByDateWithNoMatch()
             throws ParseException
     {
-        Date date = AppConstants.SDF_ONLY_DATE.parse("2018-12-10");
+        Date date = AppConstants.SDF_DATE.parse("2018-12-10");
         List<CookieDetail> foundCookies = cookieLogService.searchCookiesByDate(cookieLogs, date);
         Assertions.assertNull(foundCookies);
     }

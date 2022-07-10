@@ -28,7 +28,7 @@ public class ParseLogCommandIntegrationTest
     {
         URL url = this.getClass().getResource(COOKIE_LOG_DATA_CSV);
         ReflectionTestUtils.setField(parseLogCommand, "file", new File(url.getFile()));
-        ReflectionTestUtils.setField(parseLogCommand, "date", AppConstants.SDF_ONLY_DATE.parse("2018-12-08"));
+        ReflectionTestUtils.setField(parseLogCommand, "date", AppConstants.SDF_DATE.parse("2018-12-08"));
         Integer exitCode = parseLogCommand.call();
         Assertions.assertEquals(0, exitCode);
     }
@@ -39,7 +39,7 @@ public class ParseLogCommandIntegrationTest
     {
         URL url = this.getClass().getResource(COOKIE_LOG_DATA_CSV);
         ReflectionTestUtils.setField(parseLogCommand, "file", new File(url.getFile()));
-        ReflectionTestUtils.setField(parseLogCommand, "date", AppConstants.SDF_ONLY_DATE.parse("2018-12-03"));
+        ReflectionTestUtils.setField(parseLogCommand, "date", AppConstants.SDF_DATE.parse("2018-12-03"));
         Integer exitCode = parseLogCommand.call();
         Assertions.assertEquals(0, exitCode);
     }
@@ -50,7 +50,7 @@ public class ParseLogCommandIntegrationTest
     {
         URL url = this.getClass().getResource(COOKIE_LOG_DATA_CSV);
         ReflectionTestUtils.setField(parseLogCommand, "file", new File(url.getFile()));
-        ReflectionTestUtils.setField(parseLogCommand, "date", AppConstants.SDF_ONLY_DATE.parse("2022-07-04"));
+        ReflectionTestUtils.setField(parseLogCommand, "date", AppConstants.SDF_DATE.parse("2022-07-04"));
         Integer exitCode = parseLogCommand.call();
         Assertions.assertEquals(0, exitCode);
     }

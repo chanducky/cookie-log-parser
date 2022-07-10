@@ -33,12 +33,12 @@ class AppIntegrationTest
         List<CookieDetail> cookieLogs = fileParserService.parseCsvToBean(new File(url.getFile()),
                                                                                CookieDetail.class);
 
-        Date date = AppConstants.SDF_ONLY_DATE.parse("2018-12-08");
+        Date date = AppConstants.SDF_DATE.parse("2018-12-08");
         List<CookieDetail> foundCookies = cookieLogService.searchCookiesByDate(cookieLogs, date);
         Assertions.assertNotNull(foundCookies);
         Assertions.assertEquals(3, foundCookies.size());
 
-         date = AppConstants.SDF_ONLY_DATE.parse("2018-12-03");
+         date = AppConstants.SDF_DATE.parse("2018-12-03");
         foundCookies = cookieLogService.searchCookiesByDate(cookieLogs, date);
         Assertions.assertNotNull(foundCookies);
         Assertions.assertEquals(1, foundCookies.size());

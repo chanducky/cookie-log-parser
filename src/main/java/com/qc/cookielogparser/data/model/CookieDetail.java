@@ -5,9 +5,8 @@ import com.opencsv.bean.CsvDate;
 import com.qc.cookielogparser.data.common.AppConstants;
 
 import java.util.Date;
-import java.util.Objects;
 
-import static com.qc.cookielogparser.data.common.AppConstants.SDF_ONLY_DATE;
+import static com.qc.cookielogparser.data.common.AppConstants.SDF_DATE;
 
 /**
  * Cookie data.
@@ -18,7 +17,7 @@ public class CookieDetail implements Comparable<CookieDetail>
     @CsvBindByName
     private String cookie;
 
-    @CsvDate(AppConstants.CSV_DATE_PATTERN)
+    @CsvDate(AppConstants.CSV_DATE_TIME_PATTERN)
     @CsvBindByName
     private Date timestamp;
 
@@ -55,29 +54,10 @@ public class CookieDetail implements Comparable<CookieDetail>
     @Override
     public int compareTo(CookieDetail o)
     {
-        String d1 = SDF_ONLY_DATE.format(this.getTimestamp());
-        String d2= SDF_ONLY_DATE.format(o.getTimestamp());
+        String d1 = SDF_DATE.format(this.getTimestamp());
+        String d2= SDF_DATE.format(o.getTimestamp());
         return d2.compareTo(d1);
     }
 
-    @Override
-    public boolean equals(Object o)
-    {
-        if (this == o)
-        {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass())
-        {
-            return false;
-        }
-        CookieDetail that = (CookieDetail) o;
-        return cookie.equals(that.cookie) && timestamp.equals(that.timestamp);
-    }
 
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(cookie, timestamp);
-    }
 }

@@ -66,7 +66,7 @@ public class ParseLogCommand
             else
             {
                 System.out.println(
-                        String.format("No cookie found for the date : %s.", AppConstants.SDF_ONLY_DATE.format(date)));
+                        String.format("No cookie found for the date : %s.", AppConstants.SDF_DATE.format(date)));
             }
             return 0;
         }
