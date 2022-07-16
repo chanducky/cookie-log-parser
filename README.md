@@ -14,8 +14,8 @@ The following guides illustrate how to use some features concretely:
 #### Running from source code using gradle.
 * Go to root resource **cookie-log-parser** then run next command.
 * `./gradlew bootRun --args='-f=<filepath> -d=<yyyy-MM-dd>'`
-* i.e `./gradlew bootRun --args='-f=src/test/resources/csv/cookie_log_data.csv -d=2018-12-09'`
-  or ` ./gradlew bootRun --args='-f=cookie_log_data.csv -d=2018-12-09' ` when file is available inside root resource.
+* i.e `./gradlew bootRun --args='-f=src/test/resources/csv/cookie_log.csv -d=2018-12-09'`
+  or ` ./gradlew bootRun --args='-f=cookie_log.csv -d=2018-12-09' ` when file is available inside root resource.
 
 * Note run using --debug mode to run in debug mode to see log in details. 
 
@@ -23,7 +23,7 @@ The following guides illustrate how to use some features concretely:
 * Generate jar file using `./gradlew clean build `or `./gradlew jar`.
 * copy jar file and csv file in same directory and jump to the directory and execute below command.
 * `java -jar <jar file name> -f <file path> -d=<date in YYYY-MM-DD format>`
-* i.e `java -jar cookie-log-parser-0.0.1-SNAPSHOT.jar -f cookie_log_data.csv -d=2018-12-09`
+* i.e `java -jar cookie-log-parser-0.0.1-SNAPSHOT.jar -f cookie_log.csv -d=2018-12-09`
 
 ### Used Development frameworks, Tools and libraries
 ###### Development Framework

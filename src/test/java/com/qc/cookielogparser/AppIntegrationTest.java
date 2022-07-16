@@ -15,6 +15,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @SpringBootTest
 class AppIntegrationTest
@@ -29,18 +30,18 @@ class AppIntegrationTest
     void testCall()
             throws IOException, ParseException
     {
-        URL url = this.getClass().getResource("/csv/cookie_log_data.csv");
+        URL url = this.getClass().getResource("/csv/cookie_log.csv");
         List<CookieDetail> cookieLogs = fileParserService.parseCsvToBean(new File(url.getFile()),
                                                                                CookieDetail.class);
 
         Date date = AppConstants.SDF_DATE.parse("2018-12-08");
-        List<CookieDetail> foundCookies = cookieLogService.searchCookiesByDate(cookieLogs, date);
-        Assertions.assertNotNull(foundCookies);
-        Assertions.assertEquals(3, foundCookies.size());
+        Set<CookieDetail> mostActiveCookies = cookieLogService.searchMostActiveCookiesForDate(cookieLogs, date);
+        Assertions.assertNotNull(mostActiveCookies);
+        Assertions.assertEquals(1, mostActiveCookies.size());
 
-         date = AppConstants.SDF_DATE.parse("2018-12-03");
-        foundCookies = cookieLogService.searchCookiesByDate(cookieLogs, date);
-        Assertions.assertNotNull(foundCookies);
-        Assertions.assertEquals(1, foundCookies.size());
+         date = AppConstants.SDF_DATE.parse("2018-12-07");
+        mostActiveCookies = cookieLogService.searchMostActiveCookiesForDate(cookieLogs, date);
+        Assertions.assertNotNull(mostActiveCookies);
+        Assertions.assertEquals(1, mostActiveCookies.size());
     }
 }

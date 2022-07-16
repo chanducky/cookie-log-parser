@@ -17,16 +17,17 @@ import java.text.ParseException;
 @SpringBootTest
 public class ParseLogCommandIntegrationTest
 {
-    public static final String COOKIE_LOG_DATA_CSV = "/csv/cookie_log_data.csv";
+    public static final String CSV_COOKIE_LOG_CSV = "/csv/cookie_log.csv";
+    public static final String CSV_NO_SUCH_FILE = "/invalid/no_file.csv";
 
     @Autowired
     private ParseLogCommand parseLogCommand;
 
     @Test
-    void testCallWhenMultipleCookieMatchByDate()
+    void testCallWhenMultipleCookieMatchByDateButFoundSingleMostActive()
             throws ParseException
     {
-        URL url = this.getClass().getResource(COOKIE_LOG_DATA_CSV);
+        URL url = this.getClass().getResource(CSV_COOKIE_LOG_CSV);
         ReflectionTestUtils.setField(parseLogCommand, "file", new File(url.getFile()));
         ReflectionTestUtils.setField(parseLogCommand, "date", AppConstants.SDF_DATE.parse("2018-12-08"));
         Integer exitCode = parseLogCommand.call();
@@ -34,12 +35,12 @@ public class ParseLogCommandIntegrationTest
     }
 
     @Test
-    void testCallWhenSingleCookieMatchByDate()
+    void testCallWhenSingleMostActiveCookieMatchByDate()
             throws ParseException
     {
-        URL url = this.getClass().getResource(COOKIE_LOG_DATA_CSV);
+        URL url = this.getClass().getResource(CSV_COOKIE_LOG_CSV);
         ReflectionTestUtils.setField(parseLogCommand, "file", new File(url.getFile()));
-        ReflectionTestUtils.setField(parseLogCommand, "date", AppConstants.SDF_DATE.parse("2018-12-03"));
+        ReflectionTestUtils.setField(parseLogCommand, "date", AppConstants.SDF_DATE.parse("2018-12-07"));
         Integer exitCode = parseLogCommand.call();
         Assertions.assertEquals(0, exitCode);
     }
@@ -48,8 +49,18 @@ public class ParseLogCommandIntegrationTest
     void testCallWhenNoCookieMatchByDate()
             throws ParseException
     {
-        URL url = this.getClass().getResource(COOKIE_LOG_DATA_CSV);
+        URL url = this.getClass().getResource(CSV_COOKIE_LOG_CSV);
         ReflectionTestUtils.setField(parseLogCommand, "file", new File(url.getFile()));
+        ReflectionTestUtils.setField(parseLogCommand, "date", AppConstants.SDF_DATE.parse("2022-07-04"));
+        Integer exitCode = parseLogCommand.call();
+        Assertions.assertEquals(0, exitCode);
+    }
+
+    @Test
+    void testCallWhenFileNotAvailable()
+            throws ParseException
+    {
+        ReflectionTestUtils.setField(parseLogCommand, "file", new File(CSV_NO_SUCH_FILE));
         ReflectionTestUtils.setField(parseLogCommand, "date", AppConstants.SDF_DATE.parse("2022-07-04"));
         Integer exitCode = parseLogCommand.call();
         Assertions.assertEquals(0, exitCode);

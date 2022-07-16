@@ -6,6 +6,7 @@ import org.springframework.lang.Nullable;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * This Service is being used for Cookie log related operations.
@@ -13,11 +14,11 @@ import java.util.List;
 public interface CookieLogService
 {
     /**
-     * Search cookies from cookie list by cookie generated date.
+     * Search most active cookies for the date.
      * @param cookieList List of cookie.
      * @param date cookie date.
-     * @return cookies generated on the search date.
+     * @return most active cookies for the date.
      */
     @Nullable
-    List<CookieDetail> searchCookiesByDate(@NonNull List<CookieDetail> cookieList, @NonNull Date date);
+    Set<CookieDetail> searchMostActiveCookiesForDate(@NonNull List<CookieDetail> cookieList, @NonNull Date date);
 }

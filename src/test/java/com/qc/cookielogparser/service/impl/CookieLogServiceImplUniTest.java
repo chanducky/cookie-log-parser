@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -30,10 +31,10 @@ class CookieLogServiceImplUniTest
 
     private static List<CookieDetail> cookieLogs;
 
-    void loadCsvLogs()
+    private void loadCsvLogs()
             throws IOException
     {
-        URL url = this.getClass().getResource("/csv/cookie_log_data.csv");
+        URL url = this.getClass().getResource("/csv/cookie_log.csv");
         List<String> allLines = Files.readAllLines(new File(url.getFile()).toPath());
 
         cookieLogs = new ArrayList<>(allLines.size());
@@ -56,7 +57,7 @@ class CookieLogServiceImplUniTest
 
     @BeforeEach
     void setUp()
-            throws IOException, ParseException
+            throws IOException
     {
         MockitoAnnotations.openMocks(this);
         loadCsvLogs();
@@ -64,47 +65,58 @@ class CookieLogServiceImplUniTest
     }
 
     @Test
-    void testSearchCookiesByDateWithNullParams()
+    void testSearchMostActiveCookiesForDateWithNullParams()
     {
         assertThrows(IllegalArgumentException.class,
-                     () -> cookieLogService.searchCookiesByDate(null, new Date()));
+                     () -> cookieLogService.searchMostActiveCookiesForDate(null, new Date()));
         assertThrows(IllegalArgumentException.class,
-                     () -> cookieLogService.searchCookiesByDate(new ArrayList<>(), null));
+                     () -> cookieLogService.searchMostActiveCookiesForDate(new ArrayList<>(), null));
     }
 
     @Test
-    void testSearchCookiesByDateWithEmptyList()
+    void testSearchMostActiveCookiesForDateWithEmptyList()
     {
-        List<CookieDetail> foundCookies = cookieLogService.searchCookiesByDate(new ArrayList<>(), new Date());
-        Assertions.assertNull(foundCookies);
+        Set<CookieDetail> mostActiveCookies = cookieLogService.searchMostActiveCookiesForDate(new ArrayList<>(),
+                                                                                         new Date());
+        Assertions.assertNull(mostActiveCookies);
     }
 
     @Test
-    void testSearchCookiesByDateWithSingleMatch()
+    void testSearchMostActiveCookiesForDateWithSingleMatch()
             throws ParseException
     {
-        Date date = AppConstants.SDF_DATE.parse("2018-12-03");
-        List<CookieDetail> foundCookies = cookieLogService.searchCookiesByDate(cookieLogs, date);
-        Assertions.assertNotNull(foundCookies);
-        Assertions.assertEquals(1, foundCookies.size());
+        Date date = AppConstants.SDF_DATE.parse("2018-12-07");
+        Set<CookieDetail> mostActiveCookies = cookieLogService.searchMostActiveCookiesForDate(cookieLogs, date);
+        Assertions.assertNotNull(mostActiveCookies);
+        Assertions.assertEquals(1, mostActiveCookies.size());
     }
 
     @Test
-    void testSearchCookiesByDateWithMultipleMatch()
+    void testSearchMostActiveCookiesForDateWithMultipleMatchButSingleMostActive()
             throws ParseException
     {
         Date date = AppConstants.SDF_DATE.parse("2018-12-08");
-        List<CookieDetail> foundCookies = cookieLogService.searchCookiesByDate(cookieLogs, date);
-        Assertions.assertNotNull(foundCookies);
-        Assertions.assertEquals(3, foundCookies.size());
+        Set<CookieDetail> mostActiveCookies = cookieLogService.searchMostActiveCookiesForDate(cookieLogs, date);
+        Assertions.assertNotNull(mostActiveCookies);
+        Assertions.assertEquals(1, mostActiveCookies.size());
     }
 
     @Test
-    void testSearchCookiesByDateWithNoMatch()
+    void testSearchMostActiveCookiesForDateWithNoMatch()
             throws ParseException
     {
         Date date = AppConstants.SDF_DATE.parse("2018-12-10");
-        List<CookieDetail> foundCookies = cookieLogService.searchCookiesByDate(cookieLogs, date);
-        Assertions.assertNull(foundCookies);
+        Set<CookieDetail> mostActiveCookies = cookieLogService.searchMostActiveCookiesForDate(cookieLogs, date);
+        Assertions.assertNull(mostActiveCookies);
+    }
+
+    @Test
+    void testSearchMostActiveCookiesForDateWithMultipleActiveMatch()
+            throws ParseException
+    {
+        Date date = AppConstants.SDF_DATE.parse("2022-07-05");
+        Set<CookieDetail> mostActiveCookies = cookieLogService.searchMostActiveCookiesForDate(cookieLogs, date);
+        Assertions.assertNotNull(mostActiveCookies);
+        Assertions.assertEquals(2, mostActiveCookies.size());
     }
 }

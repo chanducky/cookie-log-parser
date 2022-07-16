@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 
 /**
  * Unit tests for ParseLogCommand.
@@ -28,7 +29,7 @@ class ParseLogCommandUnitTest
     private ParseLogCommand parseLogCommand;
 
     @BeforeEach
-    void setUp()
+    public void setUp()
     {
         MockitoAnnotations.openMocks(this);
         parseLogCommand = new ParseLogCommand(fileParserService, cookieLogService);
@@ -40,8 +41,8 @@ class ParseLogCommandUnitTest
     {
         Mockito.doReturn(new ArrayList<>())
                 .when(fileParserService).parseCsvToBean(Mockito.nullable(File.class), Mockito.any(Class.class));
-        Mockito.doReturn(new ArrayList<>())
-                .when(cookieLogService).searchCookiesByDate(Mockito.anyList(), Mockito.nullable(Date.class));
+        Mockito.doReturn(new HashSet<>())
+                .when(cookieLogService).searchMostActiveCookiesForDate(Mockito.anyList(), Mockito.nullable(Date.class));
 
         int exitCode = parseLogCommand.call();
         Assertions.assertEquals(0, exitCode);
@@ -49,7 +50,7 @@ class ParseLogCommandUnitTest
         Mockito.verify(fileParserService, Mockito.times(1))
                 .parseCsvToBean(Mockito.nullable(File.class), Mockito.any(Class.class));
         Mockito.verify(cookieLogService, Mockito.times(1))
-                .searchCookiesByDate(Mockito.anyList(), Mockito.nullable(Date.class));
+                .searchMostActiveCookiesForDate(Mockito.anyList(), Mockito.nullable(Date.class));
     }
 
     @Test
@@ -60,11 +61,11 @@ class ParseLogCommandUnitTest
                 .when(fileParserService).parseCsvToBean(Mockito.nullable(File.class), Mockito.any(Class.class));
 
         int exitCode = parseLogCommand.call();
-        Assertions.assertEquals(1, exitCode);
+        Assertions.assertEquals(0, exitCode);
 
         Mockito.verify(fileParserService, Mockito.times(1))
                 .parseCsvToBean(Mockito.nullable(File.class), Mockito.any(Class.class));
         Mockito.verify(cookieLogService, Mockito.times(0))
-                .searchCookiesByDate(Mockito.anyList(), Mockito.any(Date.class));
+                .searchMostActiveCookiesForDate(Mockito.anyList(), Mockito.any(Date.class));
     }
 }

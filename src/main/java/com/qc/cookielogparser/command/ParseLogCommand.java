@@ -14,6 +14,7 @@ import java.io.File;
 import java.nio.file.NoSuchFileException;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 /**
@@ -58,10 +59,12 @@ public class ParseLogCommand
             {
                 cookieDetailList.forEach(System.out::println);
             }
-            List<CookieDetail> resultList = cookieLogService.searchCookiesByDate(cookieDetailList, date);
-            if (resultList != null)
+            Set<CookieDetail> mostActiveCookies =
+                    cookieLogService.searchMostActiveCookiesForDate(cookieDetailList, date);
+
+            if (mostActiveCookies != null)
             {
-                resultList.stream().map(CookieDetail::getCookie).forEach(System.out::println);
+                mostActiveCookies.stream().map(CookieDetail::getCookie).forEach(System.out::println);
             }
             else
             {
@@ -72,7 +75,8 @@ public class ParseLogCommand
         }
         catch (NoSuchFileException e)
         {
-            log.error(" File : {} not found.", file, e);
+            System.out.printf("%n File : %s not found.", file);
+            return 0;
         }
         catch (Exception e)
         {

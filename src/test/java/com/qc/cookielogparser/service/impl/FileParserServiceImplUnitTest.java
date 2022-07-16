@@ -46,13 +46,12 @@ class FileParserServiceImplUnitTest
 
     @Test
     void testParseCsvToBeanWithEmptyFile()
-            throws IOException
     {
         URL url = this.getClass().getResource("/csv/empty.csv");
-        List<CookieDetail> cookieDetailList = fileParserService.parseCsvToBean(new File(url.getFile()),
-                                                                               CookieDetail.class);
-        Assertions.assertNotNull(cookieDetailList);
-        Assertions.assertEquals(0, cookieDetailList.size());
+        RuntimeException thrown = Assertions.assertThrows(RuntimeException.class,
+                                                          () -> fileParserService.parseCsvToBean(
+                                                                  new File(url.getFile()), CookieDetail.class));
+        Assertions.assertEquals("Error capturing CSV header!", thrown.getMessage());
     }
 
     @Test
@@ -67,13 +66,31 @@ class FileParserServiceImplUnitTest
     }
 
     @Test
-    void testParseCsvToBeanWithLogFile()
+    void testParseCsvToBeanFileWithCorrectData()
             throws IOException
     {
-        URL url = this.getClass().getResource("/csv/cookie_log_data.csv");
+        URL url = this.getClass().getResource("/csv/cookie_log.csv");
         List<CookieDetail> cookieDetailList = fileParserService.parseCsvToBean(new File(url.getFile()),
                                                                                CookieDetail.class);
         Assertions.assertNotNull(cookieDetailList);
         Assertions.assertTrue(cookieDetailList.size() > 0);
+    }
+
+    @Test
+    void testParseCsvToBeanFileWithNullData()
+    {
+        URL url = this.getClass().getResource("/csv/cookie_log_invalid.csv");
+        RuntimeException thrown = Assertions.assertThrows(RuntimeException.class,
+                                () -> fileParserService.parseCsvToBean(new File(url.getFile()), CookieDetail.class));
+        Assertions.assertEquals("Error parsing CSV line: 4, values: null", thrown.getMessage());
+    }
+
+    @Test
+    void testParseCsvToBeanFileWhenFileNotAvailable()
+    {
+        Assertions.assertThrows(NoSuchFileException.class,
+                                () -> fileParserService.parseCsvToBean(
+                                        new File("/invalid/cookie_log.csv"),
+                                        CookieDetail.class));
     }
 }

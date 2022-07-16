@@ -1,5 +1,6 @@
 package com.qc.cookielogparser.service.impl;
 
+import com.qc.cookielogparser.data.common.AppConstants;
 import com.qc.cookielogparser.data.model.CookieDetail;
 import com.qc.cookielogparser.service.CookieLogService;
 import lombok.extern.slf4j.Slf4j;
@@ -8,10 +9,10 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * {@inheritdoc}
@@ -25,56 +26,39 @@ public class CookieLogServiceImpl
      * {@inheritdoc}
      */
     @Override
-    public @Nullable List<CookieDetail> searchCookiesByDate(
+    public @Nullable Set<CookieDetail> searchMostActiveCookiesForDate(
             @NonNull final List<CookieDetail> cookieList,
             @NonNull final Date date)
     {
         Assert.notNull(cookieList, "cookieList can't be null.");
         Assert.notNull(date, "date can't be null.");
 
-        CookieDetail searchKey = new CookieDetail(null, date);
-        int keyIndex = Collections.binarySearch(cookieList, searchKey);
-        if (keyIndex >= 0)
+        Set<CookieDetail> mostActiveCookies = null;
+        CookieDetail mostActiveCookie = null;
+
+        for (CookieDetail cookie : cookieList)
         {
-            ArrayList<CookieDetail> foundCookies = new ArrayList<>();
-            foundCookies.add(cookieList.get(keyIndex));
-            searchBackward(cookieList, foundCookies, searchKey, keyIndex);
-            searchForward(cookieList, foundCookies, searchKey, keyIndex);
-            return foundCookies;
+            if (mostActiveCookie == null)
+            {
+                String d1 = AppConstants.SDF_DATE.format(cookie.getTimestamp());
+                String d2 = AppConstants.SDF_DATE.format(date);
+                if (d1.compareTo(d2) == 0)
+                {
+                    mostActiveCookie = cookie;
+                    mostActiveCookies = new HashSet<>();
+                    mostActiveCookies.add(cookie);
+                }
+            }
+            else if (mostActiveCookie.getTimestamp().compareTo(cookie.getTimestamp()) == 0)
+            {
+                mostActiveCookies.add(cookie);
+            }
+            else
+            {
+                break;
+            }
         }
-        return null;
+        return mostActiveCookies;
     }
 
-    private void searchForward(List<CookieDetail> cookieList, ArrayList<CookieDetail> foundCookies,
-                               CookieDetail searchKey,
-                               int keyIndex)
-    {
-        ++keyIndex;
-
-        if (isCookieSearchCriteriaMatched(cookieList, keyIndex, searchKey))
-        {
-            foundCookies.add(cookieList.get(keyIndex));
-            searchForward(cookieList, foundCookies, searchKey, keyIndex);
-        }
-    }
-
-    private void searchBackward(List<CookieDetail> cookieList, ArrayList<CookieDetail> foundCookies,
-                                CookieDetail searchKey, int keyIndex)
-    {
-        --keyIndex;
-        if (isCookieSearchCriteriaMatched(cookieList, keyIndex, searchKey))
-        {
-            foundCookies.add(cookieList.get(keyIndex));
-            searchBackward(cookieList, foundCookies, searchKey, keyIndex);
-        }
-    }
-
-    private boolean isCookieSearchCriteriaMatched(List<CookieDetail> cookieList, int keyIndex, CookieDetail searchKey)
-    {
-        if (keyIndex < cookieList.size() && keyIndex >= 0)
-        {
-            return cookieList.get(keyIndex).compareTo(searchKey) == 0;
-        }
-        return false;
-    }
 }
