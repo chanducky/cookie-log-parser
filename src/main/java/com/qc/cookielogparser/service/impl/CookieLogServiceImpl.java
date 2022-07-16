@@ -42,6 +42,7 @@ public class CookieLogServiceImpl
             {
                 String d1 = AppConstants.SDF_DATE.format(cookie.getTimestamp());
                 String d2 = AppConstants.SDF_DATE.format(date);
+
                 if (d1.compareTo(d2) == 0)
                 {
                     mostActiveCookie = cookie;
@@ -60,5 +61,4 @@ public class CookieLogServiceImpl
         }
         return mostActiveCookies;
     }
-
 }
