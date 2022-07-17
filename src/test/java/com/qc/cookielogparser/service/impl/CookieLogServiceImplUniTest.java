@@ -40,17 +40,17 @@ class CookieLogServiceImplUniTest
         cookieLogs = new ArrayList<>(allLines.size());
         allLines.stream().skip(1).forEach(line -> {
             String[] columns = line.split(",");
-            Date date = null;
+
             try
             {
-                date = AppConstants.SDF_CSV_DATE_TIME.parse(columns[1].trim());
+                final CookieDetail cookieDetail = new CookieDetail(columns[0], AppConstants.SDF_CSV_DATE_TIME.parse(
+                        columns[1].trim()));
+                cookieLogs.add(cookieDetail);
             }
             catch (ParseException e)
             {
                 e.printStackTrace();
             }
-            final CookieDetail cookieDetail = new CookieDetail(columns[0], date);
-            cookieLogs.add(cookieDetail);
         });
         cookieLogs = Collections.unmodifiableList(cookieLogs);
     }
@@ -82,7 +82,7 @@ class CookieLogServiceImplUniTest
     }
 
     @Test
-    void testSearchMostActiveCookiesForDateWithSingleMatch()
+    void testSearchMostActiveCookiesForDateWithSingleMatchAndSingeMostActive()
             throws ParseException
     {
         Date date = AppConstants.SDF_DATE.parse("2018-12-07");

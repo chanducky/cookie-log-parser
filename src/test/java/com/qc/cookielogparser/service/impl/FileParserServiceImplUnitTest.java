@@ -37,11 +37,12 @@ class FileParserServiceImplUnitTest
     }
 
     @Test
-    void testParseCsvToBeanWhenFileNotAvailable()
+    void testParseCsvToBeanFileWhenFileNotAvailable()
     {
-        String path = "/csv/no_such_file.csv";
-        assertThrows(NoSuchFileException.class,
-                     () -> fileParserService.parseCsvToBean(new File(path), CookieDetail.class));
+        Assertions.assertThrows(NoSuchFileException.class,
+                                () -> fileParserService.parseCsvToBean(
+                                        new File("/invalid/cookie_log.csv"),
+                                        CookieDetail.class));
     }
 
     @Test
@@ -83,14 +84,5 @@ class FileParserServiceImplUnitTest
         RuntimeException thrown = Assertions.assertThrows(RuntimeException.class,
                                 () -> fileParserService.parseCsvToBean(new File(url.getFile()), CookieDetail.class));
         Assertions.assertEquals("Error parsing CSV line: 4, values: null", thrown.getMessage());
-    }
-
-    @Test
-    void testParseCsvToBeanFileWhenFileNotAvailable()
-    {
-        Assertions.assertThrows(NoSuchFileException.class,
-                                () -> fileParserService.parseCsvToBean(
-                                        new File("/invalid/cookie_log.csv"),
-                                        CookieDetail.class));
     }
 }

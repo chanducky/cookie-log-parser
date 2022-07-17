@@ -18,7 +18,6 @@ import java.text.ParseException;
 public class ParseLogCommandIntegrationTest
 {
     public static final String CSV_COOKIE_LOG_CSV = "/csv/cookie_log.csv";
-    public static final String CSV_NO_SUCH_FILE = "/invalid/no_file.csv";
 
     @Autowired
     private ParseLogCommand parseLogCommand;
@@ -60,7 +59,7 @@ public class ParseLogCommandIntegrationTest
     void testCallWhenFileNotAvailable()
             throws ParseException
     {
-        ReflectionTestUtils.setField(parseLogCommand, "file", new File(CSV_NO_SUCH_FILE));
+        ReflectionTestUtils.setField(parseLogCommand, "file", new File("/invalid/no_file.csv"));
         ReflectionTestUtils.setField(parseLogCommand, "date", AppConstants.SDF_DATE.parse("2022-07-04"));
         Integer exitCode = parseLogCommand.call();
         Assertions.assertEquals(0, exitCode);
