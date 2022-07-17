@@ -114,7 +114,7 @@ class CookieLogServiceImplUniTest
     void testSearchMostActiveCookiesForDateWithMultipleActiveMatch()
             throws ParseException
     {
-        Date date = AppConstants.SDF_DATE.parse("2022-07-05");
+        Date date = AppConstants.SDF_DATE.parse("2018-07-05");
         Set<CookieDetail> mostActiveCookies = cookieLogService.searchMostActiveCookiesForDate(cookieLogs, date);
         Assertions.assertNotNull(mostActiveCookies);
         Assertions.assertEquals(2, mostActiveCookies.size());
