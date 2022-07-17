@@ -40,10 +40,10 @@ public class CookieLogServiceImpl
         {
             if (mostActiveCookie == null)
             {
-                String d1 = AppConstants.SDF_DATE.format(cookie.getTimestamp());
-                String d2 = AppConstants.SDF_DATE.format(date);
+                String cookieDate = AppConstants.SDF_DATE.format(cookie.getTimestamp());
+                String searchDate = AppConstants.SDF_DATE.format(date);
 
-                if (d1.equals(d2))
+                if (cookieDate.equals(searchDate))
                 {
                     mostActiveCookie = cookie;
                     mostActiveCookies = new HashSet<>();
