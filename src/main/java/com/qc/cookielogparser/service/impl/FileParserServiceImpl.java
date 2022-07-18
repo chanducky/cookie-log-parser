@@ -28,16 +28,16 @@ public class FileParserServiceImpl implements FileParserService
     public <T> List<T> parseCsvToBean(@NonNull final File file, Class<T> clazz)
             throws IOException
     {
-        Reader reader = Files.newBufferedReader(file.toPath());
-        HeaderColumnNameMappingStrategy<T> strategy
-                = new HeaderColumnNameMappingStrategy<>();
-        strategy.setType(clazz);
-        CsvToBean<T> csvToBean = new CsvToBeanBuilder<T>(reader)
-                .withMappingStrategy(strategy)
-                .withIgnoreLeadingWhiteSpace(true)
-                .build();
-        List<T> list = csvToBean.parse();
-        reader.close();
-        return list;
+        try (Reader reader = Files.newBufferedReader(file.toPath()))
+        {
+            HeaderColumnNameMappingStrategy<T> strategy
+                    = new HeaderColumnNameMappingStrategy<>();
+            strategy.setType(clazz);
+            CsvToBean<T> csvToBean = new CsvToBeanBuilder<T>(reader)
+                    .withMappingStrategy(strategy)
+                    .withIgnoreLeadingWhiteSpace(true)
+                    .build();
+            return csvToBean.parse();
+        }
     }
 }
