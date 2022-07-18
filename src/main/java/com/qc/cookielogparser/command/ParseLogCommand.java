@@ -39,7 +39,7 @@ public class ParseLogCommand
     }
 
     @Option(names = {"-f", "--file"}, required = true, paramLabel = "File",
-            description = "Cookie log file relative path.", arity = "1")
+            description = "Cookie log file path.", arity = "1")
     private File file;
 
     @Option(names = {"-d", "--date"}, required = true, paramLabel = "Date",

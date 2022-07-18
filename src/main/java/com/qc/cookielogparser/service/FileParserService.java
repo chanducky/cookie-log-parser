@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Service is being used from parse file to the bean.
+ * Service is being used to parse file and convert to Bean.
  */
 public interface FileParserService
 {
